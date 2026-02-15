@@ -3,7 +3,7 @@
 import base64
 from functools import lru_cache
 
-from pydantic import model_validator
+from pydantic import field_validator, model_validator
 from pydantic_settings import BaseSettings
 
 _INSECURE_DEFAULTS = {"change-me-in-production", "change-me-jwt-secret", "change-me-fernet-key"}
@@ -20,6 +20,14 @@ class Settings(BaseSettings):
 
     # --- Database ---
     database_url: str = "postgresql+asyncpg://xfeed:xfeed@localhost:5432/xfeed"
+
+    @field_validator("database_url", mode="before")
+    @classmethod
+    def _fix_db_scheme(cls, v: str) -> str:
+        """Railway provides postgresql:// but asyncpg needs postgresql+asyncpg://."""
+        if isinstance(v, str) and v.startswith("postgresql://"):
+            return v.replace("postgresql://", "postgresql+asyncpg://", 1)
+        return v
 
     # --- Redis ---
     redis_url: str = "redis://localhost:6379"
