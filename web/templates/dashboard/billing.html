@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Billing — X Feed Reader{% endblock %}
+
+{% block body %}
+{% include "dashboard/_nav.html" %}
+
+<main class="max-w-2xl mx-auto px-6 pt-24 pb-16">
+  <h1 class="text-2xl font-bold mb-8">Billing</h1>
+
+  <div class="rounded-xl bg-surface-900/50 border border-surface-800/50 overflow-hidden">
+    <div class="p-6">
+      {% if subscription and subscription.status in ('active', 'trialing') %}
+        <!-- Active subscription -->
+        <div class="flex items-center gap-3 mb-6">
+          <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-900/40 text-green-400 border border-green-800/40">Active</span>
+          {% if subscription.cancel_at_period_end %}
+          <span class="px-3 py-1 rounded-full text-xs font-medium bg-amber-900/40 text-amber-400 border border-amber-800/40">Cancels at period end</span>
+          {% endif %}
+        </div>
+
+        <div class="space-y-3 mb-8">
+          <div class="flex justify-between text-sm">
+            <span class="text-surface-400">Plan</span>
+            <span class="text-white font-medium">Pro — $5/month</span>
+          </div>
+          {% if subscription.current_period_end %}
+          <div class="flex justify-between text-sm">
+            <span class="text-surface-400">{% if subscription.cancel_at_period_end %}Access until{% else %}Next billing date{% endif %}</span>
+            <span class="text-white font-medium">{{ subscription.current_period_end.strftime('%B %d, %Y') }}</span>
+          </div>
+          {% endif %}
+        </div>
+
+        <form action="/api/billing/portal" method="POST">
+          <button type="submit" class="px-5 py-2.5 rounded-lg bg-surface-800 hover:bg-surface-700 text-white text-sm font-medium transition-colors border border-surface-700">
+            Manage Billing
+          </button>
+        </form>
+
+      {% elif subscription and subscription.status == 'past_due' %}
+        <!-- Past due -->
+        <div class="flex items-center gap-3 mb-6">
+          <span class="px-3 py-1 rounded-full text-xs font-medium bg-red-900/40 text-red-400 border border-red-800/40">Past Due</span>
+        </div>
+        <p class="text-surface-400 text-sm mb-6">Your payment failed. Please update your payment method to continue receiving briefings.</p>
+        <form action="/api/billing/portal" method="POST">
+          <button type="submit" class="px-5 py-2.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-sm font-medium transition-colors">
+            Update Payment Method
+          </button>
+        </form>
+
+      {% else %}
+        <!-- No subscription -->
+        <div class="text-center py-4">
+          <h2 class="text-xl font-bold mb-2">Subscribe to activate briefings</h2>
+          <p class="text-surface-400 text-sm mb-8">Get daily AI-curated briefings from your X feed for $5/month.</p>
+
+          <ul class="space-y-2 text-left max-w-sm mx-auto mb-8">
+            <li class="flex items-center gap-2 text-sm text-surface-300">
+              <svg class="w-4 h-4 text-brand-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              Daily AI-curated briefings
+            </li>
+            <li class="flex items-center gap-2 text-sm text-surface-300">
+              <svg class="w-4 h-4 text-brand-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              Customizable prompt presets
+            </li>
+            <li class="flex items-center gap-2 text-sm text-surface-300">
+              <svg class="w-4 h-4 text-brand-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              Email and Telegram delivery
+            </li>
+          </ul>
+
+          <form action="/api/billing/checkout" method="POST">
+            <button type="submit" class="px-8 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold transition-all shadow-lg shadow-brand-600/25">
+              Subscribe — $5/month
+            </button>
+          </form>
+          <p class="text-surface-500 text-xs mt-4">Powered by Stripe. Cancel anytime.</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</main>
+{% endblock %}

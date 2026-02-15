@@ -1,0 +1,21 @@
+# X Feed Reader Configuration
+# Copy this file to config.yaml and customize
+
+browser_profile: "data/browser-profile"
+db_path: "data/x_feed.db"
+output_dir: "output"
+verbose: false
+
+telegram:
+  bot_token: ""  # Get from @BotFather on Telegram
+  chat_id: ""    # Your Telegram user/group ID
+
+summary:
+  hours: 24
+  format: "html"
+  method: "simple"
+  lmstudio_url: "http://localhost:1234"
+
+scrape:
+  max_tweets: 100
+  headed: false

@@ -1,0 +1,78 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "x-feed-reader"
+version = "0.4.0"
+description = "Ein lokales Python-Tool, das den X.com-Feed via Browser-Automation ausliest, in einer SQLite-Datenbank speichert und täglich eine Zusammenfassung generiert."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [
+    { name = "Chris" }
+]
+dependencies = [
+    "playwright>=1.45.0",
+    "sqlalchemy>=2.0.0",
+    "typer>=0.12.0",
+    "python-dotenv>=1.0.0",
+    "rich>=13.0.0",
+    "pyyaml>=6.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "mypy>=1.0.0",
+    "ruff>=0.1.0",
+]
+scheduler = [
+    "pystray>=0.19.0",
+    "Pillow>=10.0.0",
+    "schedule>=1.2.0",
+]
+web = [
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.27",
+    "jinja2>=3.1",
+    "python-multipart>=0.0.6",
+    "httpx>=0.27",
+    "asyncpg>=0.29",
+    "sqlalchemy[asyncio]>=2.0",
+    "alembic>=1.13",
+    "pyjwt>=2.8",
+    "cryptography>=42.0",
+    "stripe>=8.0",
+    "arq>=0.26",
+    "redis>=5.0",
+    "resend>=2.0",
+    "markdown>=3.5",
+    "nh3>=0.2",
+    "pydantic-settings>=2.1",
+]
+
+[project.scripts]
+xfeed = "src.main:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src", "web"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_ignores = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]

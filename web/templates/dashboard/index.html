@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard — X Feed Reader{% endblock %}
+
+{% block body %}
+{% include "dashboard/_nav.html" %}
+
+<main class="max-w-5xl mx-auto px-6 pt-24 pb-16">
+  <!-- Subscription banner -->
+  {% if not subscription or subscription.status not in ('active', 'trialing') %}
+  <div class="mb-8 p-4 rounded-xl bg-amber-900/30 border border-amber-700/40 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+      <span class="text-amber-200 text-sm">Subscribe to activate daily briefings</span>
+    </div>
+    <a href="/app/billing" class="px-4 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-sm font-medium transition-colors">Subscribe — $5/mo</a>
+  </div>
+  {% endif %}
+
+  <div class="flex items-center justify-between mb-8">
+    <div>
+      <h1 class="text-2xl font-bold">Welcome back, {{ user.x_display_name or user.x_username }}</h1>
+      <p class="text-surface-400 text-sm mt-1">@{{ user.x_username }}</p>
+    </div>
+    <form hx-post="/api/pipeline/run" hx-target="#run-status" hx-swap="innerHTML">
+      <button type="submit" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-sm font-medium transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Run Now
+      </button>
+    </form>
+  </div>
+
+  <div id="run-status" class="mb-6"></div>
+
+  <!-- Stats grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
+    <div class="p-5 rounded-xl bg-surface-900/50 border border-surface-800/50">
+      <div class="text-surface-500 text-xs font-medium uppercase tracking-wider mb-1">Tweets Collected</div>
+      <div class="text-2xl font-bold">{{ tweet_count }}</div>
+    </div>
+    <div class="p-5 rounded-xl bg-surface-900/50 border border-surface-800/50">
+      <div class="text-surface-500 text-xs font-medium uppercase tracking-wider mb-1">Last Run</div>
+      <div class="text-2xl font-bold">
+        {% if last_run %}{{ last_run.started_at.strftime('%b %d, %H:%M') }}{% else %}Never{% endif %}
+      </div>
+    </div>
+    <div class="p-5 rounded-xl bg-surface-900/50 border border-surface-800/50">
+      <div class="text-surface-500 text-xs font-medium uppercase tracking-wider mb-1">Next Briefing</div>
+      <div class="text-2xl font-bold">{{ settings.schedule_hour }}:00 {{ settings.timezone }}</div>
+    </div>
+  </div>
+
+  <!-- Latest briefing -->
+  <div class="rounded-xl bg-surface-900/50 border border-surface-800/50 overflow-hidden">
+    <div class="px-6 py-4 border-b border-surface-800/50 flex items-center justify-between">
+      <h2 class="text-lg font-semibold">Latest Briefing</h2>
+      <a href="/app/briefings" class="text-sm text-brand-400 hover:text-brand-300 transition-colors">View all &rarr;</a>
+    </div>
+    <div class="p-6">
+      {% if latest_briefing %}
+        <div class="flex items-center gap-4 mb-4 text-sm text-surface-400">
+          <span>{{ latest_briefing.created_at.strftime('%B %d, %Y at %H:%M') }}</span>
+          <span class="w-1 h-1 rounded-full bg-surface-600"></span>
+          <span>{{ latest_briefing.tweet_count }} tweets</span>
+          <span class="w-1 h-1 rounded-full bg-surface-600"></span>
+          <span>{{ latest_briefing.llm_provider }}</span>
+        </div>
+        <div class="prose prose-invert prose-sm max-w-none line-clamp-6">
+          {{ latest_briefing.content[:500] }}{% if latest_briefing.content|length > 500 %}...{% endif %}
+        </div>
+        <a href="/app/briefings/{{ latest_briefing.id }}" class="inline-flex items-center gap-1 mt-4 text-sm text-brand-400 hover:text-brand-300 transition-colors">
+          Read full briefing
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </a>
+      {% else %}
+        <div class="text-center py-8 text-surface-500">
+          <svg class="w-12 h-12 mx-auto mb-3 text-surface-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+          <p>No briefings yet. Click "Run Now" to generate your first one.</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</main>
+{% endblock %}

@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+
+{% block title %}X Feed Reader — Stop scrolling. Start knowing.{% endblock %}
+
+{% block body %}
+<!-- Nav -->
+<nav class="fixed top-0 w-full z-40 bg-surface-950/80 backdrop-blur-xl border-b border-surface-800/50">
+  <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+    <a href="/" class="text-lg font-bold tracking-tight">
+      <span class="text-brand-400">X</span>Feed Reader
+    </a>
+    <div class="flex items-center gap-6">
+      <a href="#how-it-works" class="text-sm text-surface-400 hover:text-white transition-colors">How it works</a>
+      <a href="#pricing" class="text-sm text-surface-400 hover:text-white transition-colors">Pricing</a>
+      <a href="/login" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg bg-brand-600 hover:bg-brand-700 text-white transition-colors">
+        Get Started
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="pt-32 pb-24 px-6">
+  <div class="max-w-4xl mx-auto text-center">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-950/60 border border-brand-800/40 text-brand-300 text-xs font-medium mb-8">
+      <span class="w-1.5 h-1.5 rounded-full bg-brand-400 animate-pulse"></span>
+      AI-powered feed intelligence
+    </div>
+
+    <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1] mb-6">
+      Stop scrolling.<br />
+      <span class="gradient-text">Start knowing.</span>
+    </h1>
+
+    <p class="text-lg sm:text-xl text-surface-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+      Your X feed, distilled into an AI-curated daily briefing. No noise, no doom-scrolling — just the stories and insights that matter to you.
+    </p>
+
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a href="/login" class="inline-flex items-center gap-2 px-8 py-3.5 text-base font-semibold rounded-xl bg-brand-600 hover:bg-brand-500 text-white transition-all shadow-lg shadow-brand-600/25 hover:shadow-brand-500/30 hover:-translate-y-0.5">
+        Connect with X
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+      </a>
+      <a href="#how-it-works" class="inline-flex items-center gap-2 px-8 py-3.5 text-base font-medium rounded-xl border border-surface-700 hover:border-surface-600 text-surface-300 hover:text-white transition-all">
+        See how it works
+      </a>
+    </div>
+
+    <!-- Social proof -->
+    <div class="mt-16 flex items-center justify-center gap-8 text-surface-500 text-sm">
+      <div class="flex items-center gap-2">
+        <svg class="w-4 h-4 text-brand-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+        $5/month
+      </div>
+      <div class="w-px h-4 bg-surface-700"></div>
+      <span>Cancel anytime</span>
+      <div class="w-px h-4 bg-surface-700"></div>
+      <span>Your data, your control</span>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works -->
+<section id="how-it-works" class="py-24 px-6 border-t border-surface-800/50">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl sm:text-4xl font-bold tracking-tight mb-4">Three steps to clarity</h2>
+      <p class="text-surface-400 text-lg">From chaotic feed to focused briefing in minutes.</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      <!-- Step 1 -->
+      <div class="relative p-8 rounded-2xl bg-surface-900/50 border border-surface-800/50 glow">
+        <div class="w-10 h-10 rounded-xl bg-brand-600/20 flex items-center justify-center text-brand-400 font-bold text-lg mb-5">1</div>
+        <h3 class="text-xl font-semibold mb-3">Connect your X account</h3>
+        <p class="text-surface-400 leading-relaxed">Sign in with X via OAuth. We read your home timeline — nothing else. No posting, no following.</p>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="relative p-8 rounded-2xl bg-surface-900/50 border border-surface-800/50">
+        <div class="w-10 h-10 rounded-xl bg-brand-600/20 flex items-center justify-center text-brand-400 font-bold text-lg mb-5">2</div>
+        <h3 class="text-xl font-semibold mb-3">Customize your briefing</h3>
+        <p class="text-surface-400 leading-relaxed">Choose a focus — Tech & AI, Anti-Politics Filter, or write your own prompt. Pick your schedule and delivery channel.</p>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="relative p-8 rounded-2xl bg-surface-900/50 border border-surface-800/50">
+        <div class="w-10 h-10 rounded-xl bg-brand-600/20 flex items-center justify-center text-brand-400 font-bold text-lg mb-5">3</div>
+        <h3 class="text-xl font-semibold mb-3">Receive daily briefings</h3>
+        <p class="text-surface-400 leading-relaxed">Get a polished AI newsletter from your feed — via email or Telegram — every day at the time you choose.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section class="py-24 px-6 border-t border-surface-800/50">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl sm:text-4xl font-bold tracking-tight mb-4">What early users say</h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="p-6 rounded-2xl bg-surface-900/50 border border-surface-800/50">
+        <p class="text-surface-300 leading-relaxed mb-6">"I used to spend 2 hours on X every morning. Now I get a 3-minute briefing that's actually better. Game changer."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-brand-900/50 flex items-center justify-center text-brand-400 font-bold text-sm">MK</div>
+          <div>
+            <div class="text-sm font-medium">@mkdev</div>
+            <div class="text-xs text-surface-500">Software Engineer</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-6 rounded-2xl bg-surface-900/50 border border-surface-800/50">
+        <p class="text-surface-300 leading-relaxed mb-6">"The anti-politics filter is exactly what I needed. Finally, a clean tech-only view of my timeline."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-brand-900/50 flex items-center justify-center text-brand-400 font-bold text-sm">SL</div>
+          <div>
+            <div class="text-sm font-medium">@sarahliu</div>
+            <div class="text-xs text-surface-500">Product Manager</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-6 rounded-2xl bg-surface-900/50 border border-surface-800/50">
+        <p class="text-surface-300 leading-relaxed mb-6">"I get the Telegram briefing every morning at 7am. It's become part of my routine — better than any newsletter."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-brand-900/50 flex items-center justify-center text-brand-400 font-bold text-sm">JR</div>
+          <div>
+            <div class="text-sm font-medium">@jreyes</div>
+            <div class="text-xs text-surface-500">AI Researcher</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section id="pricing" class="py-24 px-6 border-t border-surface-800/50">
+  <div class="max-w-lg mx-auto text-center">
+    <h2 class="text-3xl sm:text-4xl font-bold tracking-tight mb-4">Simple pricing</h2>
+    <p class="text-surface-400 text-lg mb-12">One plan. Everything included. Cancel anytime.</p>
+
+    <div class="p-8 rounded-2xl bg-surface-900/50 border border-brand-600/30 glow">
+      <div class="text-brand-400 text-sm font-semibold uppercase tracking-wider mb-3">Pro</div>
+      <div class="flex items-baseline justify-center gap-1 mb-6">
+        <span class="text-5xl font-extrabold">$5</span>
+        <span class="text-surface-400 text-lg">/month</span>
+      </div>
+
+      <ul class="space-y-3 text-left mb-8">
+        <li class="flex items-center gap-3 text-surface-300">
+          <svg class="w-5 h-5 text-brand-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          Daily AI-curated briefings from your X feed
+        </li>
+        <li class="flex items-center gap-3 text-surface-300">
+          <svg class="w-5 h-5 text-brand-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          Customizable prompt presets (Tech, Anti-Politics, Custom)
+        </li>
+        <li class="flex items-center gap-3 text-surface-300">
+          <svg class="w-5 h-5 text-brand-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          Email and Telegram delivery
+        </li>
+        <li class="flex items-center gap-3 text-surface-300">
+          <svg class="w-5 h-5 text-brand-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          Choose your schedule and timezone
+        </li>
+        <li class="flex items-center gap-3 text-surface-300">
+          <svg class="w-5 h-5 text-brand-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          Full briefing history and archive
+        </li>
+      </ul>
+
+      <a href="/login" class="block w-full py-3.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold text-center transition-all shadow-lg shadow-brand-600/25">
+        Get Started
+      </a>
+      <p class="text-surface-500 text-xs mt-4">No credit card required to connect. Subscribe when you're ready.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="py-12 px-6 border-t border-surface-800/50">
+  <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+    <div class="text-sm text-surface-500">
+      &copy; 2026 <span class="text-brand-400">X</span>Feed Reader. All rights reserved.
+    </div>
+    <div class="flex items-center gap-6 text-sm text-surface-500">
+      <a href="#" class="hover:text-surface-300 transition-colors">Privacy</a>
+      <a href="#" class="hover:text-surface-300 transition-colors">Terms</a>
+      <a href="#" class="hover:text-surface-300 transition-colors">Contact</a>
+    </div>
+  </div>
+</footer>
+
+{% if scroll_to %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('{{ scroll_to }}')?.scrollIntoView({ behavior: 'smooth' });
+  });
+</script>
+{% endif %}
+{% endblock %}

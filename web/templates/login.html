@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Sign In — X Feed Reader{% endblock %}
+
+{% block body %}
+<div class="min-h-screen flex items-center justify-center px-6">
+  <div class="w-full max-w-sm">
+    <!-- Logo -->
+    <div class="text-center mb-10">
+      <a href="/" class="text-2xl font-bold tracking-tight">
+        <span class="text-brand-400">X</span>Feed Reader
+      </a>
+      <p class="text-surface-400 text-sm mt-2">Connect your X account to get started</p>
+    </div>
+
+    <!-- Login card -->
+    <div class="p-8 rounded-2xl bg-surface-900/50 border border-surface-800/50">
+      <a href="/auth/login" class="flex items-center justify-center gap-3 w-full py-3.5 rounded-xl bg-white hover:bg-gray-100 text-gray-900 font-semibold text-sm transition-colors">
+        <!-- X logo -->
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+        Connect with X
+      </a>
+
+      <p class="text-surface-500 text-xs text-center mt-6 leading-relaxed">
+        We only request read access to your home timeline.<br />
+        We will never post, follow, or like on your behalf.
+      </p>
+    </div>
+
+    <!-- Back link -->
+    <div class="text-center mt-6">
+      <a href="/" class="text-sm text-surface-500 hover:text-surface-300 transition-colors">&larr; Back to home</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

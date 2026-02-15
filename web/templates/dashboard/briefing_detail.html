@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Briefing — {{ briefing.created_at.strftime('%B %d, %Y') }}{% endblock %}
+
+{% block body %}
+{% include "dashboard/_nav.html" %}
+
+<main class="max-w-3xl mx-auto px-6 pt-24 pb-16">
+  <a href="/app/briefings" class="inline-flex items-center gap-1 text-sm text-surface-400 hover:text-surface-300 transition-colors mb-6">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+    Back to briefings
+  </a>
+
+  <div class="rounded-xl bg-surface-900/50 border border-surface-800/50 overflow-hidden">
+    <div class="px-6 py-4 border-b border-surface-800/50">
+      <h1 class="text-xl font-bold">{{ briefing.created_at.strftime('%B %d, %Y at %H:%M') }}</h1>
+      <div class="flex items-center gap-3 mt-2 text-sm text-surface-400">
+        <span>{{ briefing.tweet_count }} tweets</span>
+        <span class="w-1 h-1 rounded-full bg-surface-600"></span>
+        <span>{{ briefing.llm_provider }}</span>
+        <span class="w-1 h-1 rounded-full bg-surface-600"></span>
+        <span>{{ briefing.prompt_preset }} preset</span>
+        {% if briefing.delivered_email %}
+        <span class="px-2 py-0.5 rounded text-xs bg-green-900/40 text-green-400 border border-green-800/40">Email sent</span>
+        {% endif %}
+        {% if briefing.delivered_telegram %}
+        <span class="px-2 py-0.5 rounded text-xs bg-blue-900/40 text-blue-400 border border-blue-800/40">Telegram sent</span>
+        {% endif %}
+      </div>
+    </div>
+    <div class="p-6 prose prose-invert prose-sm max-w-none">
+      {{ html_content|safe }}
+    </div>
+  </div>
+</main>
+{% endblock %}

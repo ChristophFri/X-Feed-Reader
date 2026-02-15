@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% block title %}Settings — X Feed Reader{% endblock %}
+
+{% block body %}
+{% include "dashboard/_nav.html" %}
+
+<main class="max-w-3xl mx-auto px-6 pt-24 pb-16">
+  <h1 class="text-2xl font-bold mb-8">Settings</h1>
+
+  <!-- Prompt Settings -->
+  <section class="mb-8 rounded-xl bg-surface-900/50 border border-surface-800/50 overflow-hidden">
+    <div class="px-6 py-4 border-b border-surface-800/50">
+      <h2 class="text-lg font-semibold">Summarization Prompt</h2>
+      <p class="text-sm text-surface-400 mt-1">Choose how your briefing is generated</p>
+    </div>
+    <form hx-post="/api/settings/prompt" hx-target="#prompt-section" hx-swap="innerHTML" class="p-6" id="prompt-section">
+      <div class="space-y-3 mb-4">
+        <label class="flex items-start gap-3 p-3 rounded-lg border border-surface-700/50 hover:border-surface-600 cursor-pointer transition-colors {% if settings.prompt_preset == 'default' %}border-brand-600/50 bg-brand-950/20{% endif %}">
+          <input type="radio" name="prompt_preset" value="default" class="mt-0.5" {% if settings.prompt_preset == 'default' %}checked{% endif %} />
+          <div>
+            <div class="text-sm font-medium">Default</div>
+            <div class="text-xs text-surface-400">Full newsletter-style digest covering all topics</div>
+          </div>
+        </label>
+        <label class="flex items-start gap-3 p-3 rounded-lg border border-surface-700/50 hover:border-surface-600 cursor-pointer transition-colors {% if settings.prompt_preset == 'anti_politics' %}border-brand-600/50 bg-brand-950/20{% endif %}">
+          <input type="radio" name="prompt_preset" value="anti_politics" class="mt-0.5" {% if settings.prompt_preset == 'anti_politics' %}checked{% endif %} />
+          <div>
+            <div class="text-sm font-medium">Anti-Politics Filter</div>
+            <div class="text-xs text-surface-400">Filters out political content, focuses on tech/science/culture</div>
+          </div>
+        </label>
+        <label class="flex items-start gap-3 p-3 rounded-lg border border-surface-700/50 hover:border-surface-600 cursor-pointer transition-colors {% if settings.prompt_preset == 'tech_ai' %}border-brand-600/50 bg-brand-950/20{% endif %}">
+          <input type="radio" name="prompt_preset" value="tech_ai" class="mt-0.5" {% if settings.prompt_preset == 'tech_ai' %}checked{% endif %} />
+          <div>
+            <div class="text-sm font-medium">Tech & AI Focus</div>
+            <div class="text-xs text-surface-400">Narrows focus to AI, ML, software engineering, developer tools</div>
+          </div>
+        </label>
+        <label class="flex items-start gap-3 p-3 rounded-lg border border-surface-700/50 hover:border-surface-600 cursor-pointer transition-colors {% if settings.prompt_preset == 'custom' %}border-brand-600/50 bg-brand-950/20{% endif %}">
+          <input type="radio" name="prompt_preset" value="custom" class="mt-0.5" {% if settings.prompt_preset == 'custom' %}checked{% endif %} />
+          <div>
+            <div class="text-sm font-medium">Custom Prompt</div>
+            <div class="text-xs text-surface-400">Write your own system prompt</div>
+          </div>
+        </label>
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm text-surface-400 mb-1">Custom system prompt (used when "Custom" is selected)</label>
+        <textarea name="custom_prompt" rows="4" class="w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-sm text-white placeholder:text-surface-500 focus:border-brand-500 focus:outline-none resize-y" placeholder="You are an AI newsletter editor...">{{ settings.custom_prompt or '' }}</textarea>
+      </div>
+      <button type="submit" class="px-5 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-sm font-medium transition-colors">Save Prompt</button>
+    </form>
+  </section>
+
+  <!-- Schedule Settings -->
+  <section class="mb-8 rounded-xl bg-surface-900/50 border border-surface-800/50 overflow-hidden">
+    <div class="px-6 py-4 border-b border-surface-800/50">
+      <h2 class="text-lg font-semibold">Schedule</h2>
+      <p class="text-sm text-surface-400 mt-1">When to deliver your daily briefing</p>
+    </div>
+    <form hx-post="/api/settings/schedule" hx-target="#schedule-section" hx-swap="innerHTML" class="p-6" id="schedule-section">
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block text-sm text-surface-400 mb-1">Hour (0-23)</label>
+          <select name="schedule_hour" class="w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-sm text-white focus:border-brand-500 focus:outline-none">
+            {% for h in range(24) %}
+            <option value="{{ h }}" {% if settings.schedule_hour == h %}selected{% endif %}>{{ '%02d' % h }}:00</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm text-surface-400 mb-1">Timezone</label>
+          <select name="timezone" class="w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-sm text-white focus:border-brand-500 focus:outline-none">
+            {% for tz in ['UTC', 'US/Eastern', 'US/Central', 'US/Mountain', 'US/Pacific', 'Europe/London', 'Europe/Berlin', 'Europe/Paris', 'Asia/Tokyo', 'Asia/Shanghai', 'Australia/Sydney'] %}
+            <option value="{{ tz }}" {% if settings.timezone == tz %}selected{% endif %}>{{ tz }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <button type="submit" class="px-5 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-sm font-medium transition-colors">Save Schedule</button>
+    </form>
+  </section>
+
+  <!-- Delivery Settings -->
+  <section class="mb-8 rounded-xl bg-surface-900/50 border border-surface-800/50 overflow-hidden">
+    <div class="px-6 py-4 border-b border-surface-800/50">
+      <h2 class="text-lg font-semibold">Delivery</h2>
+      <p class="text-sm text-surface-400 mt-1">How you receive your briefings</p>
+    </div>
+    <form hx-post="/api/settings/delivery" hx-target="#delivery-section" hx-swap="innerHTML" class="p-6" id="delivery-section">
+      <div class="space-y-4 mb-4">
+        <label class="flex items-center gap-3 cursor-pointer">
+          <input type="checkbox" name="delivery_email" class="w-4 h-4 rounded border-surface-600 bg-surface-800" {% if settings.delivery_email %}checked{% endif %} />
+          <div>
+            <div class="text-sm font-medium">Email</div>
+            <div class="text-xs text-surface-400">Briefing sent to your account email</div>
+          </div>
+        </label>
+        <label class="flex items-center gap-3 cursor-pointer">
+          <input type="checkbox" name="delivery_telegram" class="w-4 h-4 rounded border-surface-600 bg-surface-800" {% if settings.delivery_telegram %}checked{% endif %} />
+          <div>
+            <div class="text-sm font-medium">Telegram</div>
+            <div class="text-xs text-surface-400">Briefing sent via Telegram bot</div>
+          </div>
+        </label>
+      </div>
+
+      <div class="space-y-3 mb-4 pl-7">
+        <div>
+          <label class="block text-sm text-surface-400 mb-1">Telegram Bot Token</label>
+          <input type="password" name="telegram_bot_token" value="" placeholder="Enter new token to update" class="w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-sm text-white placeholder:text-surface-500 focus:border-brand-500 focus:outline-none" />
+          {% if settings.telegram_bot_token %}<p class="text-xs text-surface-500 mt-1">Token is set (hidden for security)</p>{% endif %}
+        </div>
+        <div>
+          <label class="block text-sm text-surface-400 mb-1">Telegram Chat ID</label>
+          <input type="text" name="telegram_chat_id" value="{{ settings.telegram_chat_id or '' }}" placeholder="e.g. 123456789" class="w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-sm text-white placeholder:text-surface-500 focus:border-brand-500 focus:outline-none" />
+        </div>
+      </div>
+      <button type="submit" class="px-5 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-sm font-medium transition-colors">Save Delivery</button>
+    </form>
+  </section>
+
+  <!-- Advanced Settings -->
+  <section class="rounded-xl bg-surface-900/50 border border-surface-800/50 overflow-hidden">
+    <details>
+      <summary class="px-6 py-4 cursor-pointer hover:bg-surface-800/30 transition-colors">
+        <h2 class="text-lg font-semibold inline">Advanced</h2>
+        <p class="text-sm text-surface-400 mt-1">Feed source, LLM provider, tweet limits</p>
+      </summary>
+      <form hx-post="/api/settings/advanced" hx-target="#advanced-section" hx-swap="innerHTML" class="p-6 border-t border-surface-800/50" id="advanced-section">
+        <div class="grid grid-cols-2 gap-4 mb-4">
+          <div>
+            <label class="block text-sm text-surface-400 mb-1">Feed Source</label>
+            <select name="feed_source" class="w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-sm text-white focus:border-brand-500 focus:outline-none">
+              <option value="api" {% if settings.feed_source == 'api' %}selected{% endif %}>Twitter API</option>
+              <option value="scraper" {% if settings.feed_source == 'scraper' %}selected{% endif %}>Playwright Scraper</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm text-surface-400 mb-1">LLM Provider</label>
+            <select name="llm_provider" class="w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-sm text-white focus:border-brand-500 focus:outline-none">
+              <option value="openai" {% if settings.llm_provider == 'openai' %}selected{% endif %}>OpenAI</option>
+              <option value="anthropic" {% if settings.llm_provider == 'anthropic' %}selected{% endif %}>Claude (Anthropic)</option>
+              <option value="lmstudio" {% if settings.llm_provider == 'lmstudio' %}selected{% endif %}>LM Studio</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm text-surface-400 mb-1">LLM Model (optional)</label>
+            <input type="text" name="llm_model" value="{{ settings.llm_model or '' }}" placeholder="e.g. gpt-4o-mini" class="w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-sm text-white placeholder:text-surface-500 focus:border-brand-500 focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-sm text-surface-400 mb-1">Max Tweets per Run</label>
+            <input type="number" name="max_tweets" value="{{ settings.max_tweets }}" min="10" max="500" class="w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-sm text-white focus:border-brand-500 focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-sm text-surface-400 mb-1">Summary Hours (lookback)</label>
+            <input type="number" name="summary_hours" value="{{ settings.summary_hours }}" min="1" max="168" class="w-full px-3 py-2 rounded-lg bg-surface-800 border border-surface-700 text-sm text-white focus:border-brand-500 focus:outline-none" />
+          </div>
+        </div>
+        <button type="submit" class="px-5 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-sm font-medium transition-colors">Save Advanced</button>
+      </form>
+    </details>
+  </section>
+</main>
+{% endblock %}
